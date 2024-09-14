@@ -38,8 +38,9 @@ app.get("/posts/new", (req, res) => {
 // Route to create a new post
 app.post("/posts", (req, res) => {
   const { username, content } = req.body;
-  posts.push({ id: uuidv4(), username, content });
-  res.redirect(`/posts/${req.params.id}`); 
+  const newPost = { id: uuidv4(), username, content };
+  posts.push(newPost);
+  res.redirect(`/posts/${newPost.id}`);  // Redirect to the new post page
 });
 
 // Route to display a specific post
@@ -71,7 +72,7 @@ app.patch("/posts/:id", (req, res) => {
   const post = posts.find(p => p.id === id);
   if (post) {
     post.content = content;
-    res.redirect(`/posts/${req.params.id}`); 
+    res.redirect(`/posts/${post.id}`);  // Redirect to the updated post page
   } else {
     res.status(404).send("Post not found");
   }
@@ -81,7 +82,7 @@ app.patch("/posts/:id", (req, res) => {
 app.delete("/posts/:id", (req, res) => {
   const { id } = req.params;
   posts = posts.filter(p => p.id !== id);
-  res.redirect(`/posts/${req.params.id}`); 
+  res.redirect('/posts');  // Redirect to the posts list page
 });
 
 // 404 Error handling for undefined routes
